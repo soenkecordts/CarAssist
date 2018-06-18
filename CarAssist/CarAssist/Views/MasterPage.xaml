@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CarAssist.Views"
+             xmlns:models="clr-namespace:CarAssist.Models"
+             x:Class="CarAssist.Views.MasterPage"
+			 Padding="0,40,0,0"
+			 Icon="hamburger.png"
+             Title="CarAssist">
+    <StackLayout>
+        <ListView x:Name="menuList">
+            <ListView.ItemsSource>
+                <x:Array Type="{x:Type models:HamburgerMenuItem}">
+                    <models:HamburgerMenuItem Title="Fahrten" IconSource="trips.png" TargetType="{x:Type local:TripPage}"/>
+                    <models:HamburgerMenuItem Title="Autoprofil" IconSource="car.png" TargetType="{x:Type local:CarProfilePage}"/>
+                    <models:HamburgerMenuItem Title="Einstellungen" IconSource="settings.png" TargetType="{x:Type local:SettingsPage}"/>
+                    <models:HamburgerMenuItem Title="Über" IconSource="about.png" TargetType="{x:Type local:AboutPage}" />
+                </x:Array>
+            </ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="5,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding IconSource}" />
+                            <Label Grid.Column="1" Text="{Binding Title}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

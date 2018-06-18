@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Padding="0,40,0,0"
+             x:Class="CarAssist.Views.SettingsPage"
+             Title="CarAssist">
+    <AbsoluteLayout>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Padding="5">
+                <Label Text="Einstellungen" FontSize="Medium" FontAttributes="Bold" />
+                <Image Source="settings.png"/>
+            </StackLayout>
+            <TableView Intent="Form">
+                <TableRoot>
+                    <TableSection>
+                        <ImageCell ImageSource="bluetoothInverted.png" StyleId="dialogBluetooth"
+                                Text="OBDII-Adapter über Bluetooth" 
+                                Detail="Auswählen eines OBDII-Adapters über Bluetooth" 
+                                Tapped="OnSelect">
+                            <ImageCell.IsEnabled>
+                                <OnPlatform x:TypeArguments="x:Boolean">
+                                    <OnPlatform.WinPhone>False</OnPlatform.WinPhone>
+                                    <OnPlatform.iOS>False</OnPlatform.iOS>
+                                    <OnPlatform.Android>True</OnPlatform.Android>
+                                </OnPlatform>
+                            </ImageCell.IsEnabled>
+                            <ImageCell.Text>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <OnPlatform.WinPhone>Bluetooth not supported under Windows</OnPlatform.WinPhone>
+                                    <OnPlatform.iOS>Bluetooth not supported under iOS</OnPlatform.iOS>
+                                    <OnPlatform.Android>OBDII-Adapter über Bluetooth</OnPlatform.Android>
+                                </OnPlatform>
+                            </ImageCell.Text>
+                            <ImageCell.Detail>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <OnPlatform.WinPhone></OnPlatform.WinPhone>
+                                    <OnPlatform.iOS></OnPlatform.iOS>
+                                    <OnPlatform.Android>Auswählen eines OBDII-Adapters über Bluetooth</OnPlatform.Android>
+                                </OnPlatform>
+                            </ImageCell.Detail>
+                        </ImageCell>
+                        <ImageCell ImageSource="wlanInverted.png" StyleId="dialogTcp"
+                               Text="OBDII-Adapter über WLAN" 
+                               Detail="Auswählen eines OBDII-Adapters über WLAN" 
+                               Tapped="OnSelect"/>
+                        <ImageCell ImageSource="owncloud.png" StyleId="dialogOwncloud"
+                               Text="Owncloud" 
+                               Detail="Anmeldedaten zum Hochladen zur OwnCloud" 
+                               Tapped="OnSelect"/>
+                        <!--<ImageCell ImageSource="searchInverted.png" StyleId="dialogSearch"
+                               Text="Suchen" 
+                               Detail="Adapter automatisch suchen" 
+                               Tapped="OnSelect"/>-->
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </StackLayout>
+
+        <!-- Overlay: Bluetooth-Dialog -->
+        <ContentView x:Name="dialogBluetooth" StyleId="dialogBluetooth"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                 AbsoluteLayout.LayoutFlags="All"
+                 BackgroundColor="LightGray"
+                 Padding="10">
+            <StackLayout Orientation="Vertical" 
+                   BackgroundColor="White" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Start" 
+                   Margin="10">
+                <StackLayout Orientation="Horizontal" BackgroundColor="DarkBlue" Padding="10">
+                    <Image Source="bluetooth.png"/>
+                    <Label Text="Bluetooth-Adapter auswählen:" TextColor="White" VerticalTextAlignment="Center"/>
+                </StackLayout>
+
+                <Picker x:Name="bluetoothDevices" 
+                        ItemsSource="{Binding Path=BluetoothDevices}" 
+                        ItemDisplayBinding="{Binding Name}"
+                        SelectedIndex="{Binding SelectedBluetoothIndex, Mode=TwoWay}"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Abbrechen" 
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnCancel"/>
+                    <Button Text="Speichern"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnSave" />
+                </StackLayout>
+            </StackLayout>
+
+        </ContentView>
+
+        <!-- Overlay: TCP-Dialog -->
+        <ContentView x:Name="dialogTcp" StyleId="dialogTcp"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                 AbsoluteLayout.LayoutFlags="All"
+                 BackgroundColor="LightGray"
+                 Padding="10">
+            <StackLayout Orientation="Vertical" 
+                   BackgroundColor="White" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Start" 
+                   Margin="10">
+                <StackLayout Orientation="Horizontal" BackgroundColor="DarkBlue" Padding="10">
+                    <Image Source="wlan.png"/>
+                    <Label Text="IP-Adresse auswählen" TextColor="White" VerticalTextAlignment="Center"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="IP-Adresse:" />
+                    <Entry x:Name="ipAddress" Text="{Binding TcpAddress}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Port:" />
+                    <Entry x:Name="port" Text="{Binding TcpPort}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Abbrechen" 
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnCancel"/>
+                    <Button Text="Speichern"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnSave" />
+                </StackLayout>
+            </StackLayout>
+
+        </ContentView>
+
+        <!-- Overlay: Search-Dialog -->
+        <ContentView x:Name="dialogSearch" StyleId="dialogSearch"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                 AbsoluteLayout.LayoutFlags="All"
+                 BackgroundColor="LightGray"
+                 Padding="10">
+            <StackLayout Orientation="Vertical" 
+                   BackgroundColor="White" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Start" 
+                   Margin="10">
+                <StackLayout Orientation="Horizontal" BackgroundColor="DarkBlue" Padding="10">
+                    <Image Source="search.png"/>
+                    <Label Text="Automatische Suche" TextColor="White" VerticalTextAlignment="Center"/>
+                </StackLayout>
+
+                <Label x:Name="searchInfo"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Abbrechen" 
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnCancel"/>
+                    <Button Text="Speichern"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnSave" />
+                </StackLayout>
+            </StackLayout>
+
+        </ContentView>
+
+        <!-- Overlay: owncloud-Dialog -->
+        <ContentView x:Name="dialogOwncloud" StyleId="dialogOwncloud"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                 AbsoluteLayout.LayoutFlags="All"
+                 BackgroundColor="LightGray"
+                 Padding="10">
+            <StackLayout Orientation="Vertical" 
+                   BackgroundColor="White" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Start" 
+                   Margin="10">
+                <StackLayout Orientation="Horizontal" BackgroundColor="DarkBlue" Padding="10">
+                    <Image Source="owncloud.png"/>
+                    <Label Text="Anmelden" TextColor="White" VerticalTextAlignment="Center"/>
+                </StackLayout>
+                <Label Text="OwnCloud:"/>
+                <Entry x:Name="urlOwncloud" FontSize="Small" Text="{Binding OwncloudUrl}"  HorizontalOptions="FillAndExpand"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Benutzer: " VerticalOptions="Center"/>
+                    <Entry x:Name="user" Text="{Binding OwncloudUser}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Kennwort: " VerticalOptions="Center"/>
+                    <Entry x:Name="password" Text="{Binding OwncloudPassword}" IsPassword="True" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Abbrechen" 
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnCancel"/>
+                    <Button Text="Speichern"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
+                        Clicked="OnSave" />
+                </StackLayout>
+            </StackLayout>
+
+        </ContentView>
+
+    </AbsoluteLayout>
+</ContentPage>

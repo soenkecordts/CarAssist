@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Padding="0,40,0,0"
+             x:Class="CarAssist.Views.CarProfilePage"
+             Title="CarAssist">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Padding="5">
+                <Label Text="Autoprofil" FontSize="Medium" FontAttributes="Bold" />
+                <Image Source="car.png"/>
+            </StackLayout>
+            <Button Text="Aktualisieren" Image="refresh.png" Clicked="OnRefresh"/>
+            <ScrollView>
+                <StackLayout>
+                    <Label Text="Fahrzeug-ID" FontAttributes="Bold"/>
+                    <Label x:Name="vin" />
+                    <Label Text="Batteriespannung" FontAttributes="Bold"/>
+                    <Label x:Name="voltage" />
+                    <Label Text="Diagnoseprotokoll" FontAttributes="Bold"/>
+                    <Label x:Name="protocol" />
+                    <Label Text="Unterstützte PIDs" FontAttributes="Bold"/>
+                    <Label x:Name="supportedPIDs" FontSize="Micro" />
+                    <Label Text="Kraftstoff" FontAttributes="Bold"/>
+                    <Label x:Name="fuelType" />
+                    <Label Text="Steuergeräte" FontAttributes="Bold"/>
+                    <Label x:Name="ecus" />
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

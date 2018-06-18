@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarAssist.Views.TripPage"
+            Title="CarAssist">
+    <ContentPage Title="Aktuelle Fahrt">
+        <StackLayout>
+            <Button x:Name="record" Text="Aufnahme starten" Clicked="OnRecord" IsVisible="{Binding Path=IsNotRecording}">
+                <Button.Image>
+                    <OnPlatform x:TypeArguments="FileImageSource"
+                            Android="record.png"
+                            iOS="record.png"
+                            WinPhone="Assets/record.png"/>
+                </Button.Image>
+            </Button>
+            <Button x:Name="stopRecord" Text="Aufnahme stoppen" Clicked="OnStopRecord" IsVisible="{Binding Path=IsRecording}">
+                <Button.Image>
+                    <OnPlatform x:TypeArguments="FileImageSource"
+                            Android="stopRecord.png"
+                            iOS="stopRecord.png"
+                            WinPhone="Assets/stopRecord.png"/>
+                </Button.Image>
+            </Button>
+
+            <ListView ItemsSource="{Binding Path=OBDValues}" IsVisible="{Binding Path=IsRecording}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" />
+                                    <Label Text="{Binding Value, Mode=OneWay}" WidthRequest="70" FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <Label Text="{Binding Description}" VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage>
+    <ContentPage Title="Meine Fahrten">
+        <StackLayout>
+
+            <ListView x:Name="trips" ItemsSource="{Binding Path=Trips}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Image Source="trips.png" Margin="2"/>
+                                    <Label Text="{Binding Departure, StringFormat='{0:dd.MM.yyyy HH:mm}'}" FontAttributes="Bold" VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding DeparturePosition.Latitude, StringFormat='({0:0.000000}'}" FontSize="Micro" VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding DeparturePosition.Longitude, StringFormat='{0:0.000000})'}" FontSize="Micro" VerticalOptions="CenterAndExpand"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackLayout Spacing="-6">
+                <!--Spacing: Standardwert = 6-->
+                <Button Text="Hochladen" Image="upload.png" Clicked="OnUploadTrip" Margin="0"/>
+                <Button Text="Anzeigen" Image="view.png" Clicked="OnViewTrip" Margin="0"/>
+                <Button Text="Löschen" Image="delete.png" Clicked="OnDeleteTrip" Margin="0" />
+            </StackLayout>
+
+        </StackLayout>
+
+    </ContentPage>
+</TabbedPage>
